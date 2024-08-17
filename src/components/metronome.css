@@ -1,0 +1,110 @@
+
+.adjustment-button {
+    background:transparent;
+    padding:0.5rem 0.5rem;
+    margin:0 0.5rem;
+    font-size:1rem;
+
+    border-top-left-radius: 255px 15px;
+    border-top-right-radius: 15px 225px;
+    border-bottom-right-radius: 225px 15px;
+    border-bottom-left-radius:15px 255px;
+    user-select: none;
+}
+
+.adjustment-button:hover{
+ box-shadow:2px 8px 4px -6px hsla(0,0%,0%,.3);
+}
+.adjustment-button.lined.thick{
+ border:solid 3px #41403E;
+}
+.adjustment-button.dotted.thick{
+ border:dotted 3px #41403E;
+}
+.adjustment-button.dashed.thick{
+border:dashed 3px #41403E;
+}
+.adjustment-button.lined.thin{
+ border:solid 2px #41403E;
+}
+.adjustment-button.dotted.thin{
+ border:dotted 2px #41403E;
+}
+.adjustment-button.dashed.thin{
+border:dashed 2px #41403E;
+}
+
+.metronome-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 20px;
+    align-items: center;
+    padding: 20px;
+    max-width: 500px;
+    margin: auto;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    user-select: none;
+}
+
+.bpm-display {
+    font-size: 2.8em;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.controls-container {
+    display: flex; 
+    gap: 20px; 
+    align-items: center; 
+    flex-wrap: wrap; 
+}
+
+.slider {
+    flex: 1; 
+    min-width: 150px; 
+}
+
+.start-buttons-container {
+    user-select: none;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    justify-items: center;
+}
+
+.adjustment-button {
+    user-select: none;
+    height: 15px;
+    width: 15px;
+    font-size: medium;
+    color: black;
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    background-color: #fff;
+    transition: background-color 0.3s;
+}
+
+.adjustment-button:hover {
+    background-color: #e0e0e0;
+}
+
+.start-button {
+    user-select: none;
+    padding: 10px 20px;
+    font-size: 1em;
+    color: white;
+    background-color: #4f555c;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.start-button:hover {
+    background-color: #0056b3;
+}

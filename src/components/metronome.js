@@ -1,0 +1,147 @@
+import React, { useState, useEffect } from 'react';
+import AdjustmentButton from './micro-components/adjustmentButton.js';
+import StartButton from './micro-components/startButton.js';
+import TapButton from './micro-components/tapButton.js';
+import LogButton from './micro-components/logButton.js';
+import Slider from '@mui/material/Slider';
+import './metronome.css';
+
+
+var webWorker = null;
+const lookahead = 25.0;
+var audioContext = null;
+var unlocked = false;
+var currentNote;
+var scheduleAheadTime = 0.1;
+var nextNoteTime = 0.0;
+var noteLength = 0.05;
+var isMetronomePlaying = false;
+var tempo = 120;
+var lastTap = null;
+
+
+const scheduleNote = (beatNumber, time) => {
+    var osc = audioContext.createOscillator();
+    osc.connect(audioContext.destination);
+    if (beatNumber === 1)
+        osc.frequency.value = 880.0;
+    else
+        osc.frequency.value = 440.0;
+
+    osc.start(time);
+    osc.stop(time + noteLength);
+}
+
+const nextNote = (bpm) => {
+    var secondsPerBeat = 60.0 / bpm;
+    nextNoteTime += secondsPerBeat;
+    currentNote++;
+    if (currentNote === 5) {
+        currentNote = 1;
+    }
+}
+
+const scheduler = (bpm) => {
+    console.log('Scheduler called');
+    while (nextNoteTime < audioContext.currentTime + scheduleAheadTime) {
+        scheduleNote(currentNote, nextNoteTime);
+        nextNote(bpm);
+    }
+}
+
+
+const Metronome = () => {
+    const [isPlaying, flipPlayStop] = useState(false);
+    const [bpm, updateBpm] = useState(120);
+
+    useEffect(() => {
+        webWorker = new Worker(new URL('./metronomeWorker.js', import.meta.url));
+        webWorker.onmessage = function (e) {
+            if (e.data === "tick") {
+                scheduler(tempo);
+            }
+            else
+                console.log("message: " + e.data);
+        };
+        webWorker.postMessage({ "interval": lookahead });
+    }, [])
+
+    const onButtonClick = () => {
+        if (!audioContext)
+            audioContext = new AudioContext();
+
+        if (!unlocked) {
+            var buffer = audioContext.createBuffer(1, 1, 22050);
+            var node = audioContext.createBufferSource();
+            node.buffer = buffer;
+            node.start(0);
+            unlocked = true;
+        }
+        isMetronomePlaying = !isMetronomePlaying;
+
+        if (isMetronomePlaying) {
+            currentNote = 1;
+            nextNoteTime = audioContext.currentTime + 0.05;
+            webWorker.postMessage("start");
+        } else {
+            webWorker.postMessage("stop");
+        }
+        flipPlayStop(!isPlaying);
+    }
+
+    const handleSliderChange = (event, newValue) => {
+        tempo = newValue;
+        updateBpm(newValue);
+    }
+
+    const handleAdjustment = (event, adjustmentValue) => {
+        tempo = tempo + adjustmentValue;
+        updateBpm(tempo);
+    }
+
+    const handleTap = () => {
+        const currentTime = (new Date()).getTime();
+        if(lastTap===null){
+            lastTap = currentTime;
+            console.log('last tap was null ' +currentTime );
+        }
+        else if((currentTime - lastTap) <= 2000){
+            tempo = Math.ceil((60*1000)/(currentTime - lastTap));
+            console.log("INTIME diff: "+ (currentTime - lastTap) );
+            console.log("tempo: "+tempo);
+            updateBpm(tempo);
+        }
+        else{
+            console.log("LATE diff: "+ (currentTime - lastTap));
+            lastTap = null;
+        }
+    }
+    return (
+        <div className="metronome-container">
+            <div className="bpm-display">{bpm} BPM</div>
+            <div className="controls-container">
+                <AdjustmentButton value={-5} onClick={handleAdjustment} />
+                <AdjustmentButton value={-1} onClick={handleAdjustment} />
+                <Slider
+                    className='slider'
+                    value={bpm}
+                    valueLabelDisplay='auto'
+                    min={30}
+                    max={240}
+                    defaultValue={bpm}
+                    onChange={handleSliderChange}
+                    size='small'
+                />
+                <AdjustmentButton value={1} onClick={handleAdjustment} />
+                <AdjustmentButton value={5} onClick={handleAdjustment} />
+            </div>
+            <div className="start-buttons-container">
+                <TapButton onClick={handleTap}/>
+                <StartButton isPlaying={isPlaying} onClick={onButtonClick} />
+                <LogButton />
+            </div>
+        </div>
+    )
+};
+
+export default Metronome;
