@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef} from 'react';
+import { useNavigate } from 'react-router-dom';
 import AdjustmentButton from './micro-components/adjustmentButton.js';
 import StartButton from './micro-components/startButton.js';
 import TapButton from './micro-components/tapButton.js';
 import LogButton from './micro-components/logButton.js';
 import Slider from '@mui/material/Slider';
+import Button from '@mui/material/Button';
 import './metronome.css';
+import DialogForm from './micro-components/dialogForm.js';
 
 
 var webWorker = null;
@@ -53,6 +56,13 @@ const scheduler = (bpm) => {
 const Metronome = () => {
     const [isPlaying, flipPlayStop] = useState(false);
     const [bpm, updateBpm] = useState(120);
+    const [isModalOpen, toggleModalOpen] = useState(false);
+    const key = useRef(0);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!isModalOpen) key.current = key.current + 1;
+      }, [isModalOpen]);
 
     useEffect(() => {
         webWorker = new Worker(new URL('./metronomeWorker.js', import.meta.url));
@@ -65,6 +75,7 @@ const Metronome = () => {
         };
         webWorker.postMessage({ "interval": lookahead });
     }, [])
+
 
     const onButtonClick = () => {
         if (!audioContext)
@@ -95,29 +106,36 @@ const Metronome = () => {
     }
 
     const handleAdjustment = (event, adjustmentValue) => {
-        tempo = tempo + adjustmentValue;
-        updateBpm(tempo);
+        if (tempo + adjustmentValue <= 240 && tempo + adjustmentValue >= 30) {
+            tempo = tempo + adjustmentValue;
+            updateBpm(tempo);
+        }
+    }
+
+    const handleLog = ()=>{
+        toggleModalOpen(!isModalOpen);
     }
 
     const handleTap = () => {
         const currentTime = (new Date()).getTime();
-        if(lastTap===null){
+        if (lastTap === null) {
             lastTap = currentTime;
-            console.log('last tap was null ' +currentTime );
+            console.log('last tap was null ' + currentTime);
         }
-        else if((currentTime - lastTap) <= 2000){
-            tempo = Math.ceil((60*1000)/(currentTime - lastTap));
-            console.log("INTIME diff: "+ (currentTime - lastTap) );
-            console.log("tempo: "+tempo);
+        else if ((currentTime - lastTap) <= 2000) {
+            tempo = Math.ceil((60 * 1000) / (currentTime - lastTap));
+            console.log("INTIME diff: " + (currentTime - lastTap));
+            console.log("tempo: " + tempo);
             updateBpm(tempo);
         }
-        else{
-            console.log("LATE diff: "+ (currentTime - lastTap));
+        else {
+            console.log("LATE diff: " + (currentTime - lastTap));
             lastTap = null;
         }
     }
     return (
-        <div className="metronome-container">
+        <div>      
+            <div className="metronome-container">
             <div className="bpm-display">{bpm} BPM</div>
             <div className="controls-container">
                 <AdjustmentButton value={-5} onClick={handleAdjustment} />
@@ -136,11 +154,16 @@ const Metronome = () => {
                 <AdjustmentButton value={5} onClick={handleAdjustment} />
             </div>
             <div className="start-buttons-container">
-                <TapButton onClick={handleTap}/>
+                <TapButton onClick={handleTap} />
                 <StartButton isPlaying={isPlaying} onClick={onButtonClick} />
-                <LogButton />
+                <LogButton onClick={handleLog} />
             </div>
+            
+            <DialogForm key={key.current} isOpen={isModalOpen} handleClose={handleLog} bpm = {bpm} />
         </div>
+        <Button variant="contained" onClick={()=>{navigate('history')}}>History</Button>
+        </div>
+        
     )
 };
 
