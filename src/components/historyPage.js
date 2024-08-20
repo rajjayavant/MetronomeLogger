@@ -89,11 +89,6 @@ export default function App() {
         updateExerciseLogs();
     };
 
-    // if (exerciseLogs.length === 0) {
-    //     return <div>Nothing to see here</div>;
-    // }
-
-
     return (
         <div className="history-container">
             <div className="top-bar">
