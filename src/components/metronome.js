@@ -73,11 +73,9 @@ const Metronome = () => {
         webWorker.postMessage({ "interval": lookahead });
     }, [])
 
-
     const onButtonClick = () => {
         if (!audioContext)
-            audioContext = new AudioContext();
-
+                audioContext = new AudioContext();
         if (!unlocked) {
             var buffer = audioContext.createBuffer(1, 1, 22050);
             var node = audioContext.createBufferSource();
@@ -86,7 +84,6 @@ const Metronome = () => {
             unlocked = true;
         }
         isMetronomePlaying = !isMetronomePlaying;
-
         if (isMetronomePlaying) {
             currentNote = 1;
             nextNoteTime = audioContext.currentTime + 0.05;
@@ -113,6 +110,14 @@ const Metronome = () => {
         toggleModalOpen(!isModalOpen);
     }
 
+    const navigateToHistory = () => {
+        if(isPlaying){
+            webWorker.postMessage("stop");
+            isMetronomePlaying = false;
+        }
+        navigate('history');
+    }
+
     const handleTap = () => {
         const currentTime = (new Date()).getTime();
         if (lastTap === null) {
@@ -121,6 +126,7 @@ const Metronome = () => {
         else if ((currentTime - lastTap) <= 2000) {
             tempo = Math.ceil((60 * 1000) / (currentTime - lastTap));
             lastTap=currentTime;
+            if(tempo>240)tempo = 240;
             updateBpm(tempo);
             if(!isPlaying){
                 onButtonClick();
@@ -172,7 +178,7 @@ const Metronome = () => {
 
                 <DialogForm key={key.current} isOpen={isModalOpen} handleClose={handleLog} bpm={bpm} />
             </div>
-            <Button className="history-button" variant="contained" onClick={() => { navigate('history') }}>History</Button>
+            <Button className="history-button" variant="contained" onClick={navigateToHistory}>History</Button>
             <footer className="footer">
                 Made with <span style={{ color: 'red' }}>♥</span> by{" "}
                 <a href="https://github.com/rajjayavant/MetronomeLogger" target="_blank" rel="noopener noreferrer">
