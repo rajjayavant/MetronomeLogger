@@ -26,7 +26,7 @@ const style = {
 const DialogForm = ({ isOpen, handleClose, bpm }) => {
     const [exerciseName, setExerciseName] = useState('');
     const [description, setDescription] = useState('');
-    
+
     const onSave = () =>{
         const exerciseLog = {
             "bpm": bpm,
@@ -34,7 +34,7 @@ const DialogForm = ({ isOpen, handleClose, bpm }) => {
             "description": description,
             "dateTime" : new Date()
         }
-        console.log(exerciseLog);
+        localStorage.setItem(exerciseLog.dateTime, JSON.stringify(exerciseLog));
         handleClose();
     }
     return (

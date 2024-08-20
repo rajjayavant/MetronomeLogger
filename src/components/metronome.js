@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AdjustmentButton from './micro-components/adjustmentButton.js';
 import StartButton from './micro-components/startButton.js';
@@ -45,7 +45,6 @@ const nextNote = (bpm) => {
 }
 
 const scheduler = (bpm) => {
-    console.log('Scheduler called');
     while (nextNoteTime < audioContext.currentTime + scheduleAheadTime) {
         scheduleNote(currentNote, nextNoteTime);
         nextNote(bpm);
@@ -62,7 +61,7 @@ const Metronome = () => {
 
     useEffect(() => {
         if (!isModalOpen) key.current = key.current + 1;
-      }, [isModalOpen]);
+    }, [isModalOpen]);
 
     useEffect(() => {
         webWorker = new Worker(new URL('./metronomeWorker.js', import.meta.url));
@@ -70,8 +69,6 @@ const Metronome = () => {
             if (e.data === "tick") {
                 scheduler(tempo);
             }
-            else
-                console.log("message: " + e.data);
         };
         webWorker.postMessage({ "interval": lookahead });
     }, [])
@@ -112,7 +109,7 @@ const Metronome = () => {
         }
     }
 
-    const handleLog = ()=>{
+    const handleLog = () => {
         toggleModalOpen(!isModalOpen);
     }
 
@@ -134,36 +131,57 @@ const Metronome = () => {
         }
     }
     return (
-        <div>      
+        <div className='container'>
             <div className="metronome-container">
-            <div className="bpm-display">{bpm} BPM</div>
-            <div className="controls-container">
-                <AdjustmentButton value={-5} onClick={handleAdjustment} />
-                <AdjustmentButton value={-1} onClick={handleAdjustment} />
-                <Slider
-                    className='slider'
-                    value={bpm}
-                    valueLabelDisplay='auto'
-                    min={30}
-                    max={240}
-                    defaultValue={bpm}
-                    onChange={handleSliderChange}
-                    size='small'
-                />
-                <AdjustmentButton value={1} onClick={handleAdjustment} />
-                <AdjustmentButton value={5} onClick={handleAdjustment} />
+                <div className="bpm-display">{bpm} BPM</div>
+                <div className="controls-container">
+                    <AdjustmentButton value={-5} onClick={handleAdjustment} />
+                    <AdjustmentButton value={-1} onClick={handleAdjustment} />
+                    <Slider
+                        className='slider'
+                        value={bpm}
+                        valueLabelDisplay='auto'
+                        min={30}
+                        max={240}
+                        defaultValue={bpm}
+                        onChange={handleSliderChange}
+                        size='medium'
+                        sx={{
+                            '& .MuiSlider-thumb': {
+                                color: "darkcyan"
+                            },
+                            '& .MuiSlider-track': {
+                                color: "darkcyan"
+                            },
+                            '& .MuiSlider-rail': {
+                                color: "#acc4e4"
+                            },
+                            '& .MuiSlider-active': {
+                                color: "green"
+                            }
+                        }}
+                    />
+                    <AdjustmentButton value={1} onClick={handleAdjustment} />
+                    <AdjustmentButton value={5} onClick={handleAdjustment} />
+                </div>
+                <div className="start-buttons-container">
+                    <TapButton className="tap-button" onClick={handleTap} />
+                    <StartButton className="play-button" isPlaying={isPlaying} onClick={onButtonClick} />
+                    <LogButton className="log-button" onClick={handleLog} />
+                </div>
+
+                <DialogForm key={key.current} isOpen={isModalOpen} handleClose={handleLog} bpm={bpm} />
             </div>
-            <div className="start-buttons-container">
-                <TapButton onClick={handleTap} />
-                <StartButton isPlaying={isPlaying} onClick={onButtonClick} />
-                <LogButton onClick={handleLog} />
-            </div>
-            
-            <DialogForm key={key.current} isOpen={isModalOpen} handleClose={handleLog} bpm = {bpm} />
+            <Button className="history-button" variant="contained" onClick={() => { navigate('history') }}>History</Button>
+            <footer className="footer">
+                Made with <span style={{ color: 'red' }}>♥</span> by{" "}
+                <a href="https://github.com/rajjayavant/MetronomeLogger" target="_blank" rel="noopener noreferrer">
+                    Raj Jayavant
+                </a>
+            </footer>
         </div>
-        <Button variant="contained" onClick={()=>{navigate('history')}}>History</Button>
-        </div>
-        
+
+
     )
 };
 
