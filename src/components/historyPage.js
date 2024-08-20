@@ -46,7 +46,7 @@ const transitionProps = {
 export default function App() {
     const [exerciseLogs, setExerciseLogs] = useState([]);
     const navigate = useNavigate();
-    
+
     const updateExerciseLogs = () => {
         let logs = [];
         for (let i = 0; i < localStorage.length; i++) {
@@ -88,43 +88,47 @@ export default function App() {
 
     return (
         <div className="history-container">
-            <ArrowBackIosNewSharpIcon className="back-arrow" onClick={()=>{navigate('/')}}/>
+            <ArrowBackIosNewSharpIcon className="back-arrow" onClick={() => { navigate('/') }} />
             <div className="heading">
                 <h1 >History</h1>
             </div>
-            {exerciseLogs.map((currentDateLogs, dateIndex) => (
-                <div key={dateIndex}>
-                    <div className="date"> {(currentDateLogs[0].dateTime.split('T')[0]).split("-").reverse().join("-")} </div>
-                    <Accordion
-                        variant="shadow"
-                        selectionMode="multiple"
-                        showDivider={true}
-                        fullWidth={false}
-                        motionProps={transitionProps}
-                    >
-                        {currentDateLogs.map((exerciseLog, index) => (
-                            <AccordionItem
-                                key={index}
-                                aria-label={exerciseLog.dateTime}
-                                subtitle={
-                                    <span>
-                                        {exerciseLog.bpm} BPM <strong>{exerciseLog.dateTime.slice(11, 16)}</strong>
-                                    </span>
-                                }
-                                title={exerciseLog.exerciseName}
-                            >
-                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                    <div className="accordian-item">{exerciseLog.description}</div>
-                                    <div>
-                                        <button><ModeEditOutlineSharpIcon /></button>
-                                        <button onClick={() => onDelete(exerciseLog.dateTime)} ><DeleteSharpIcon/></button>
+            {(localStorage.length < 0) ? <div>Go and Create a Log First. Practice!</div> : 
+            <div>
+                {exerciseLogs.map((currentDateLogs, dateIndex) => (
+                    <div key={dateIndex}>
+                        <div className="date"> {(currentDateLogs[0].dateTime.split('T')[0]).split("-").reverse().join("-")} </div>
+                        <Accordion
+                            variant="shadow"
+                            selectionMode="multiple"
+                            showDivider={true}
+                            fullWidth={false}
+                            motionProps={transitionProps}
+                        >
+                            {currentDateLogs.map((exerciseLog, index) => (
+                                <AccordionItem
+                                    key={index}
+                                    aria-label={exerciseLog.dateTime}
+                                    subtitle={
+                                        <span>
+                                            {exerciseLog.bpm} BPM <strong>{exerciseLog.dateTime.slice(11, 16)}</strong>
+                                        </span>
+                                    }
+                                    title={exerciseLog.exerciseName}
+                                >
+                                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                        <div className="accordian-item">{exerciseLog.description}</div>
+                                        <div>
+                                            <button><ModeEditOutlineSharpIcon /></button>
+                                            <button onClick={() => onDelete(exerciseLog.dateTime)} ><DeleteSharpIcon /></button>
+                                        </div>
                                     </div>
-                                </div>
-                            </AccordionItem>
-                        ))}
-                    </Accordion>
-                </div>
-            ))}
+                                </AccordionItem>
+                            ))}
+                        </Accordion>
+                    </div>
+                ))}
+            </div>
+            }
         </div>
     );
 }
