@@ -117,17 +117,17 @@ const Metronome = () => {
         const currentTime = (new Date()).getTime();
         if (lastTap === null) {
             lastTap = currentTime;
-            console.log('last tap was null ' + currentTime);
         }
         else if ((currentTime - lastTap) <= 2000) {
             tempo = Math.ceil((60 * 1000) / (currentTime - lastTap));
-            console.log("INTIME diff: " + (currentTime - lastTap));
-            console.log("tempo: " + tempo);
+            lastTap=currentTime;
             updateBpm(tempo);
+            if(!isPlaying){
+                onButtonClick();
+            }
         }
         else {
-            console.log("LATE diff: " + (currentTime - lastTap));
-            lastTap = null;
+            lastTap = currentTime;
         }
     }
     return (

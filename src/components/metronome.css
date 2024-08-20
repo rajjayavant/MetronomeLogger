@@ -38,7 +38,7 @@
 
 .slider {
     flex: 1;
-    min-width: 300px; 
+    /* min-width: 300px;  */
     color: gray;
 }
 

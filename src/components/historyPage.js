@@ -49,32 +49,35 @@ export default function App() {
 
     const updateExerciseLogs = () => {
         let logs = [];
-        for (let i = 0; i < localStorage.length; i++) {
-            const key = localStorage.key(i);
-            const exerciseLog = localStorage.getItem(key);
-            if (exerciseLog) logs.push(JSON.parse(exerciseLog));
-        }
-        const sortedData = [...logs].sort((a, b) => {
-            const dateA = new Date(a.dateTime);
-            const dateB = new Date(b.dateTime);
-            return dateB - dateA;
-        });
-
-        let structuredData = [];
-        let currentDateData = [];
-        let currentDate = null;
-        if (sortedData.length > 0) currentDate = sortedData[0].dateTime.split('T')[0];
-        for (let i = 0; i < sortedData.length; i++) {
-            if (currentDate !== sortedData[i].dateTime.split('T')[0]) {
-                structuredData.push(currentDateData);
-                currentDateData = [sortedData[i]];
-                currentDate = sortedData[i].dateTime.split('T')[0];
-            } else {
-                currentDateData.push(sortedData[i]);
+        if (localStorage.length > 0) {
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                const exerciseLog = localStorage.getItem(key);
+                if (exerciseLog) logs.push(JSON.parse(exerciseLog));
             }
+            const sortedData = [...logs].sort((a, b) => {
+                const dateA = new Date(a.dateTime);
+                const dateB = new Date(b.dateTime);
+                return dateB - dateA;
+            });
+
+            let structuredData = [];
+            let currentDateData = [];
+            let currentDate = null;
+            if (sortedData.length > 0) currentDate = sortedData[0].dateTime.split('T')[0];
+            for (let i = 0; i < sortedData.length; i++) {
+                if (currentDate !== sortedData[i].dateTime.split('T')[0]) {
+                    structuredData.push(currentDateData);
+                    currentDateData = [sortedData[i]];
+                    currentDate = sortedData[i].dateTime.split('T')[0];
+                } else {
+                    currentDateData.push(sortedData[i]);
+                }
+            }
+            structuredData.push(currentDateData);
+            setExerciseLogs(structuredData);
         }
-        structuredData.push(currentDateData);
-        setExerciseLogs(structuredData);
+        else setExerciseLogs([]);
     };
 
     useEffect(() => {
@@ -86,48 +89,55 @@ export default function App() {
         updateExerciseLogs();
     };
 
+    // if (exerciseLogs.length === 0) {
+    //     return <div>Nothing to see here</div>;
+    // }
+
+
     return (
         <div className="history-container">
+            <div className="top-bar">
             <ArrowBackIosNewSharpIcon className="back-arrow" onClick={() => { navigate('/') }} />
             <div className="heading">
                 <h1 >History</h1>
             </div>
-            {(localStorage.length < 0) ? <div>Go and Create a Log First. Practice!</div> : 
-            <div>
-                {exerciseLogs.map((currentDateLogs, dateIndex) => (
-                    <div key={dateIndex}>
-                        <div className="date"> {(currentDateLogs[0].dateTime.split('T')[0]).split("-").reverse().join("-")} </div>
-                        <Accordion
-                            variant="shadow"
-                            selectionMode="multiple"
-                            showDivider={true}
-                            fullWidth={false}
-                            motionProps={transitionProps}
-                        >
-                            {currentDateLogs.map((exerciseLog, index) => (
-                                <AccordionItem
-                                    key={index}
-                                    aria-label={exerciseLog.dateTime}
-                                    subtitle={
-                                        <span>
-                                            {exerciseLog.bpm} BPM <strong>{exerciseLog.dateTime.slice(11, 16)}</strong>
-                                        </span>
-                                    }
-                                    title={exerciseLog.exerciseName}
-                                >
-                                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                        <div className="accordian-item">{exerciseLog.description}</div>
-                                        <div>
-                                            <button><ModeEditOutlineSharpIcon /></button>
-                                            <button onClick={() => onDelete(exerciseLog.dateTime)} ><DeleteSharpIcon /></button>
-                                        </div>
-                                    </div>
-                                </AccordionItem>
-                            ))}
-                        </Accordion>
-                    </div>
-                ))}
             </div>
+            {(localStorage.length === 0) ? <div className="no-log-message">Go and Create a Log First. Practice!</div> :
+                <div>
+                    {exerciseLogs.map((currentDateLogs, dateIndex) => (
+                        <div key={dateIndex}>
+                            <div className="date"> {(currentDateLogs[0].dateTime.split('T')[0]).split("-").reverse().join("-")} </div>
+                            <Accordion
+                                variant="shadow"
+                                selectionMode="multiple"
+                                showDivider={true}
+                                fullWidth={false}
+                                motionProps={transitionProps}
+                            >
+                                {currentDateLogs.map((exerciseLog, index) => (
+                                    <AccordionItem
+                                        key={index}
+                                        aria-label={exerciseLog.dateTime}
+                                        subtitle={
+                                            <span>
+                                                {exerciseLog.bpm} BPM <strong>{exerciseLog.dateTime.slice(11, 16)}</strong>
+                                            </span>
+                                        }
+                                        title={exerciseLog.exerciseName}
+                                    >
+                                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                            <div className="accordian-item">{exerciseLog.description}</div>
+                                            <div>
+                                                <button><ModeEditOutlineSharpIcon /></button>
+                                                <button onClick={() => onDelete(exerciseLog.dateTime)} ><DeleteSharpIcon /></button>
+                                            </div>
+                                        </div>
+                                    </AccordionItem>
+                                ))}
+                            </Accordion>
+                        </div>
+                    ))}
+                </div>
             }
         </div>
     );
