@@ -1,4 +1,4 @@
-Hosted on: [https://rajjayavant.github.io/MetronomeLogger](url)
+[Hosted on github pages](https://rajjayavant.github.io/MetronomeLogger)
 
 # Project Purpose & Overview
 
@@ -17,5 +17,12 @@ Most instrumentalists have exercises that they practice on their instrument and 
 This project uses React.js, for all the frontend. I used the NextUI UI library for some sparkle and for the data side of it - Javascript and React provides you access to the local storage of your browser as a window object accessible as 'localStorage' globally. You can store data (logs in this case) to your local storage and it can be accessed quite easily throughout the application.
 
 The main pain point in this project was definitely the metronome itself. As Javascript is a single threaded programming languages, it faces a hard time keeping rock solid time because of the multiple tasks for a single thread. Hence simple setIntervals could not be used as we wanted accuracy more than anything for each click. And hence a web worker which preschdules the clicks was to be setup. If you are interested in the mechanism of getting a metronome to be accurate read [this](https://web.dev/articles/audio-scheduling#toc-rocksolid)
+
+Further Backend integration will be done using Node.js & MongoDB.
+
+## Upcoming Features
+- Toggle Between Light & Dark Themes
+- Updating your logs
+- Optional User Auth for data to be linked with an account for cross device intergrity of data
 
 
