@@ -1,70 +1,22 @@
-# Getting Started with Create React App
+Hosted on: [https://rajjayavant.github.io/MetronomeLogger](url)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Project Purpose & Overview
 
-## Available Scripts
+What is a metronome? 
+Well, in simple terms, a metronome is a clock. It keeps time. Then what's wrong with the clock i wear on my wrist. It keeps time, but not for musicians. Every musician, especially instrumentalists NEED a metronome in their life. A metronome clicks at a particular BPM or beats per minute, which can help a musician practice anything they want to practice at a particular speed. Metronomes are used widely and almost all music recorded is recorded with a metronome clicking in the musicians ear. Now that we have established what a metronome is, lets focus on the logging side of it.
 
-In the project directory, you can run:
+Why a logger?
+Most instrumentalists have exercises that they practice on their instrument and the methodology to doing that is playing the metronome at a particular BPM, getting comfortable at that speed and they maybe on later days trying to improve on that speed by increasing the BPM. I wanted to keep a track of the BPM I am currently comfortable for each exercise. I had to write it down every time, and so I wondered why not have a mechanism to keep track of my progress in my metronome itself. This is the purpose of this project - to make my practice sessions smoother.
 
-### `npm start`
+## Initial Design
+![Design](https://github.com/user-attachments/assets/a999b5b4-8cf7-48f7-b62c-15deee9b2f94)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Technologies Used & Issues Faced
 
-### `npm test`
+This project uses React.js, for all the frontend. I used the NextUI UI library for some sparkle and for the data side of it - Javascript and React provides you access to the local storage of your browser as a window object accessible as 'localStorage' globally. You can store data (logs in this case) to your local storage and it can be accessed quite easily throughout the application.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+The main pain point in this project was definitely the metronome itself. As Javascript is a single threaded programming languages, it faces a hard time keeping rock solid time because of the multiple tasks for a single thread. Hence simple setIntervals could not be used as we wanted accuracy more than anything for each click. And hence a web worker which preschdules the clicks was to be setup. If you are interested in the mechanism of getting a metronome to be accurate: [https://web.dev/articles/audio-scheduling#toc-rocksolid
+](url)
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
