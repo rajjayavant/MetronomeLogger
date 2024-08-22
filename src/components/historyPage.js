@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { Accordion, AccordionItem } from "@nextui-org/react";
 import ModeEditOutlineSharpIcon from '@mui/icons-material/ModeEditOutlineSharp';
 import ArrowBackIosNewSharpIcon from '@mui/icons-material/ArrowBackIosNewSharp';
 import DeleteSharpIcon from '@mui/icons-material/DeleteSharp';
 import './historyPage.css';
+import './micro-components/updateDialog.js'
+import UpdateDialog from "./micro-components/updateDialog.js";
 
 const transitionProps = {
     variants: {
@@ -46,6 +48,13 @@ const transitionProps = {
 export default function App() {
     const [exerciseLogs, setExerciseLogs] = useState([]);
     const navigate = useNavigate();
+    const [isModalOpen, flipModalState] = useState(false);
+    const key =useRef(0);
+    const updationExerciseLog = useRef({});
+
+    useEffect(()=>{
+        key.current = key.current +1;
+    },[isModalOpen]);
 
     const updateExerciseLogs = () => {
         let logs = [];
@@ -89,8 +98,21 @@ export default function App() {
         updateExerciseLogs();
     };
 
+    const onUpdateDialog =(exerciseLog) =>{
+        updationExerciseLog.current = exerciseLog;
+        console.log('exerciseLog.dateTime ', exerciseLog.dateTime);
+        console.log();
+        flipModalState(true);
+    }
+
+    const onModalClose = () => {
+        flipModalState(false);
+        updateExerciseLogs();
+    }
+
     return (
         <div className="history-container">
+            <UpdateDialog key={key} isOpen={isModalOpen} handleClose={onModalClose} exerciseLog={updationExerciseLog.current}/>
             <div className="top-bar">
             <ArrowBackIosNewSharpIcon className="back-arrow" onClick={() => { navigate('/') }} />
             <div className="heading">
@@ -115,7 +137,7 @@ export default function App() {
                                         aria-label={exerciseLog.dateTime}
                                         subtitle={
                                             <span>
-                                                {exerciseLog.bpm} BPM <strong>{exerciseLog.dateTime.slice(11, 16)}</strong>
+                                                {exerciseLog.bpm} BPM <strong>{(new Date(exerciseLog.dateTime)).toString().slice(15,21)}</strong>
                                             </span>
                                         }
                                         title={exerciseLog.exerciseName}
@@ -123,7 +145,7 @@ export default function App() {
                                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                                             <div className="accordian-item">{exerciseLog.description}</div>
                                             <div>
-                                                <button><ModeEditOutlineSharpIcon /></button>
+                                                <button><ModeEditOutlineSharpIcon onClick={()=>onUpdateDialog(exerciseLog)}/></button>
                                                 <button onClick={() => onDelete(exerciseLog.dateTime)} ><DeleteSharpIcon /></button>
                                             </div>
                                         </div>

@@ -1,0 +1,46 @@
+.modal-container{
+    position:absolute;
+    top: 50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    background-color: #282c34;
+    width:25%;
+    padding:2% 2% ;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid rgb(17, 17, 17);
+    border-radius: 5%;
+    box-shadow: 0 0 0 0;
+}
+
+.main-modal-container{
+    box-shadow: 0 0 0 0;
+}
+
+button.save-button {
+    background-color: #333;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 25px;
+    margin-top: 20px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button.save-button:hover {
+    background-color: #555;
+}
+
+.transition-modal-title{
+    color: aliceblue;
+    font-size: 3vw;
+}
+
+.input{
+    width:100%;
+}
+.input input {
+    color: rgb(224, 224, 224);
+  }
