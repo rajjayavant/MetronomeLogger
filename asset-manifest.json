@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/MetronomeLogger/static/css/main.a6137ea9.css",
+    "main.css": "/MetronomeLogger/static/css/main.536c7999.css",
     "main.js": "/MetronomeLogger/static/js/main.27d1d0d4.js",
     "static/js/271.8679a446.chunk.js": "/MetronomeLogger/static/js/271.8679a446.chunk.js",
     "static/js/453.51cd0ed7.chunk.js": "/MetronomeLogger/static/js/453.51cd0ed7.chunk.js",
     "index.html": "/MetronomeLogger/index.html",
-    "main.a6137ea9.css.map": "/MetronomeLogger/static/css/main.a6137ea9.css.map",
+    "main.536c7999.css.map": "/MetronomeLogger/static/css/main.536c7999.css.map",
     "main.27d1d0d4.js.map": "/MetronomeLogger/static/js/main.27d1d0d4.js.map",
     "271.8679a446.chunk.js.map": "/MetronomeLogger/static/js/271.8679a446.chunk.js.map",
     "453.51cd0ed7.chunk.js.map": "/MetronomeLogger/static/js/453.51cd0ed7.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.a6137ea9.css",
+    "static/css/main.536c7999.css",
     "static/js/main.27d1d0d4.js"
   ]
 }
