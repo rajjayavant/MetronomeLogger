@@ -138,6 +138,7 @@ const Metronome = () => {
     }
     return (
         <div className='container'>
+            <DialogForm key={key.current} isOpen={isModalOpen} handleClose={handleLog} bpm={bpm} />
             <div className="metronome-container">
                 <div className="bpm-display">{bpm} BPM</div>
                 <div className="controls-container">
@@ -176,7 +177,7 @@ const Metronome = () => {
                     <LogButton className="log-button" onClick={handleLog} />
                 </div>
 
-                <DialogForm key={key.current} isOpen={isModalOpen} handleClose={handleLog} bpm={bpm} />
+                
             </div>
             <Button className="history-button" variant="contained" onClick={navigateToHistory}>History</Button>
             <footer className="footer">

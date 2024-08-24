@@ -21,30 +21,32 @@ const DialogForm = ({ isOpen, handleClose, bpm }) => {
     }
     return (
         <Modal
-            className="main-modal-container"
-            keepMounted={false}
-            aria-labelledby="transition-modal-title"
-            aria-describedby="transition-modal-description"
-            open={isOpen}
-            onClose={handleClose}
-            closeAfterTransition
-            slots={{ backdrop: Backdrop }}
-            slotProps={{
-                backdrop: {
-                    timeout: 500,
-                    sx: {
-                        backdropFilter: 'blur(3px)',
-                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-
-                    },
+        className="main-modal-container"
+        keepMounted={false}
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={isOpen}
+        onClose={handleClose}
+        closeAfterTransition
+        slots={{ backdrop: Backdrop }}
+        slotProps={{
+            backdrop: {
+                timeout: 500,
+                sx: {
+                    backdropFilter: 'blur(3px)',
+                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
                 },
-            }}
+            },
+        }}
+        sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+        }}
         >
 
             <div className="modal-container">
                 <div className="transition-modal-title">
-                    
-                    
                     {bpm} BPM
                 </div>
 

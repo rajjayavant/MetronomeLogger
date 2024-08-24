@@ -1,22 +1,26 @@
 .container {
-    height: 100%;
+    min-height: 100vh;
     width: 100%;
-    padding: 5%;
-    padding-bottom: 0%;
+    padding: 3%;
+    padding-top: 10%;
+    padding-bottom: 60px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    position: relative;
+    overflow: hidden;
 }
 
 .metronome-container {
     display: grid;
     grid-template-columns: 1fr;
-    grid-gap: 20px;
+    grid-gap: 15px;
     align-items: center;
-    padding: 20px;
-    max-width: 700px; 
+    padding: 15px;
+    width: 95%;
+    max-width: 600px; 
     margin: auto;
-    margin-top: 5%;
+    margin-top: 3%;
     border: 1px solid #535353;
     border-radius: 10px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
@@ -24,21 +28,23 @@
 }
 
 .bpm-display {
-    font-size: 2.8em;
+    font-size: clamp(1.8em, 4vw, 2.4em);
     text-align: center;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
 
 .controls-container {
     display: flex;
-    gap: 10px;
+    gap: 4%;
     align-items: center;
     flex-wrap: wrap;
+    justify-content: center;
 }
 
 .slider {
     flex: 1;
-    min-width: 300px; 
+    min-width: 180px;
+    max-width: 100%;
     color: gray;
 }
 
@@ -47,20 +53,22 @@
     justify-content: center;
     align-items: center;
     width: 100%;
-    gap: 7%;
+    gap: 4%;
+    flex-wrap: wrap;
 }
 
 .adjustment-button {
     background-color: #333;
     color: #8b8a88;
     border: solid 2px #41403E;
-    border-radius: 25px;
-    min-width: 50px;
+    border-radius: 20px;
+    min-width: 35px;
     text-align: center;
-    padding: 10px;
-    margin: 5px;
+    padding: 6px;
+    margin: 3px;
     cursor: pointer;
     transition: background-color 0.3s;
+    font-size: clamp(0.7em, 1.5vw, 0.9em);
 }
 
 .adjustment-button:hover {
@@ -68,14 +76,23 @@
     color: #363636;
 }
 
+.tap-button, .log-button, .start-button {
+    padding: 8px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: clamp(0.7em, 1.5vw, 0.9em);
+    margin: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
 .tap-button, .log-button {
     background-color: #f0f0f0;
     color: black;
     border: 1px solid gray;
-    padding: 10px 20px;
-    border-radius: 25px;
-    cursor: pointer;
-    transition: background-color 0.3s;
 }
 
 .tap-button:hover, .log-button:hover {
@@ -85,11 +102,7 @@
 .start-button {
     background-color: #4f555c;
     color: white;
-    padding: 10px 20px;
-    border-radius: 25px;
-    cursor: pointer;
     border: none;
-    transition: background-color 0.3s;
 }
 
 .start-button:hover {
@@ -99,12 +112,13 @@
 button.history-button {
     background-color: #333;
     color: white;
-    padding: 10px 20px;
-    border-radius: 25px;
-    margin-top: 20px;
+    padding: 8px 14px;
+    border-radius: 20px;
+    margin-top: 15px;
     border: none;
     cursor: pointer;
     transition: background-color 0.3s;
+    font-size: 0.7em;
 }
 
 button.history-button:hover {
@@ -113,11 +127,11 @@ button.history-button:hover {
 
 .footer {
     position: absolute;
-    bottom: 2%;
-    margin-top: 30px;
-
+    bottom: 10px;
+    left: 0;
+    right: 0;
     text-align: center;
-    font-size: small;
+    font-size: 0.5em;
     color: gray;
 }
 
@@ -128,4 +142,46 @@ button.history-button:hover {
 
 .footer a:hover {
     text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+    .container{
+        padding-top: 30%;
+    }
+    .metronome-container {
+        width: 90%;
+        padding: 10px;
+        grid-gap: 10px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .controls-container {
+        gap: 1%;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .slider {
+        order: 1;
+        width: 100%;
+        /* margin: 10px 0; */
+    }
+
+    .adjustment-button {
+        order: 0;
+        flex: 0 1 calc(25% - 10px);
+        max-width: 50px;
+    }
+
+    .start-buttons-container {
+        flex-direction: row;
+        gap: 5px;
+    }
+
+    .tap-button, .log-button, .start-button {
+        flex: 1;
+        min-width: 0;
+        padding: 8px 5px;
+    }
 }
