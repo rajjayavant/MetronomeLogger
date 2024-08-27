@@ -1,9 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import AdjustmentButton from './micro-components/adjustmentButton.js';
-import StartButton from './micro-components/startButton.js';
-import TapButton from './micro-components/tapButton.js';
-import LogButton from './micro-components/logButton.js';
 import Slider from '@mui/material/Slider';
 import Button from '@mui/material/Button';
 import './metronome.css';
@@ -73,9 +69,9 @@ const Metronome = () => {
         webWorker.postMessage({ "interval": lookahead });
     }, [])
 
-    const onButtonClick = () => {
+    const togglePlayStop = () => {
         if (!audioContext)
-                audioContext = new AudioContext();
+            audioContext = new AudioContext();
         if (!unlocked) {
             var buffer = audioContext.createBuffer(1, 1, 22050);
             var node = audioContext.createBufferSource();
@@ -111,7 +107,7 @@ const Metronome = () => {
     }
 
     const navigateToHistory = () => {
-        if(isPlaying){
+        if (isPlaying) {
             webWorker.postMessage("stop");
             isMetronomePlaying = false;
         }
@@ -125,11 +121,11 @@ const Metronome = () => {
         }
         else if ((currentTime - lastTap) <= 2000) {
             tempo = Math.ceil((60 * 1000) / (currentTime - lastTap));
-            lastTap=currentTime;
-            if(tempo>240)tempo = 240;
+            lastTap = currentTime;
+            if (tempo > 240) tempo = 240;
             updateBpm(tempo);
-            if(!isPlaying){
-                onButtonClick();
+            if (!isPlaying) {
+                togglePlayStop();
             }
         }
         else {
@@ -142,8 +138,8 @@ const Metronome = () => {
             <div className="metronome-container">
                 <div className="bpm-display">{bpm} BPM</div>
                 <div className="controls-container">
-                    <AdjustmentButton value={-5} onClick={handleAdjustment} />
-                    <AdjustmentButton value={-1} onClick={handleAdjustment} />
+                    <button className="adjustment-button" onClick={(e) => handleAdjustment(e, -5)}> -5</button>
+                    <button className="adjustment-button" onClick={(e) => handleAdjustment(e, -1)}> -1</button>
                     <Slider
                         className='slider'
                         value={bpm}
@@ -168,16 +164,16 @@ const Metronome = () => {
                             }
                         }}
                     />
-                    <AdjustmentButton value={1} onClick={handleAdjustment} />
-                    <AdjustmentButton value={5} onClick={handleAdjustment} />
+                    <button className="adjustment-button" onClick={(e) => handleAdjustment(e, 1)}> +1</button>
+                    <button className="adjustment-button" onClick={(e) => handleAdjustment(e, 5)}> +5</button>
                 </div>
                 <div className="start-buttons-container">
-                    <TapButton className="tap-button" onClick={handleTap} />
-                    <StartButton className="play-button" isPlaying={isPlaying} onClick={onButtonClick} />
-                    <LogButton className="log-button" onClick={handleLog} />
+                    <button className="tap-button start-button" onClick={handleTap}> Tap</button>
+                    <button className="play-button start-button" onClick={togglePlayStop}> {isPlaying ? 'Stop' : 'Play'}</button>
+                    <button className="log-button start-button" onClick={handleLog}> Log</button>
                 </div>
 
-                
+
             </div>
             <Button className="history-button" variant="contained" onClick={navigateToHistory}>History</Button>
             <footer className="footer">
